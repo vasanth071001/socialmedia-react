@@ -1,0 +1,43 @@
+.search{
+    width: 800px;
+    height: 30px;
+    border-radius: 5px;
+    border: 2px violet solid;
+    text-align: center;
+    
+
+}
+form{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+ul{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+  
+}
+li{
+    padding-right: 50px;
+    text-decoration: none;
+    list-style: none;
+    height: 40px;
+}
+a:hover{
+background-color: white;
+color: violet;
+
+
+}
+.div{
+
+   background-color: violet;
+    
+}
+a{
+    text-decoration: none;
+   
+ 
+}

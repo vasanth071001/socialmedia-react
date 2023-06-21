@@ -1,0 +1,13 @@
+@font-face {
+    font-family: static;
+    src: url(./static/DancingScript-Medium.ttf);
+}
+
+.title{
+    font-family: static;
+    text-align: center;
+    color: white;
+    background-color: black;
+    margin-top: 0px;
+    
+}
