@@ -1,0 +1,15 @@
+.deletebutton{
+    background-color:red;
+    border: 2px white solid;
+    
+    margin-top:300px;
+    margin-left: 60px;
+    
+    
+   
+}
+.editbutton{
+    margin-top: 300px;
+    margin-left: -50px;
+    border: 2px white solid;
+}

@@ -7,42 +7,41 @@ import About from "./About";
 import Missing from "./Missing";
 import Footer from "./Footer";
 
-
+import Postpage from "./Postpage"
 
 import { useEffect, useState } from "react";
 import Feed from "./Feed";
 import { format } from "date-fns"
 import { Route, Routes } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import api from'./api/post'
 
 
 function App() {
-const [posts,setposts] = useState([
-  {
-    id:1,
-    
-    title:"my life story part 1",
-    datetime:"july 01 ,2021 11:17:36 AM",
-    body:"for example "
-
-  },{
-    id:2,
-    
-    title:"my life story part2",
-    datetime:"july 01 ,2021 11:17:36 AM",
-    body:"for example"
-  }
-])
-
-const handlesubmit =(e) =>{
+const [posts,setposts] = useState([])
+//axious post//
+const handlesubmit = async (e) =>{
   e.preventDefault();
  const id = posts.length ? posts[posts.length-1].id+1 :1
 const datetime = format(new Date(),'MMMM dd, yyyy PP');
 const data={id,title:posttitle,datetime,body:postbody}
-const datalist=[...posts,data]
+try{
+const response = await api.post('/posts',data)
+const datalist=[...posts,response.data]
 setposts(datalist)
 setposttitle('')
 setpostbody('')
-
+navigate('/')
+} catch(err){
+  if(err.response){
+    console.log(err.data)
+    console.log(err.status)
+    console.log(err.headers)
+  }
+else{
+    console.log(`error: ${err.Messages}`)
+  }
+}
  
 }
 
@@ -52,6 +51,9 @@ setpostbody('')
   const [searchresult,setsearchresult] = useState([])
   const [posttitle,setposttitle] = useState('')
   const [postbody,setpostbody] = useState('')
+  const [edittitle,setedittitle] = useState('')
+  const [editbody,seteditbody] = useState('')
+  const navigate = useNavigate()
 
   useEffect(() => {
     const filterList = posts.filter((post) => {
@@ -64,7 +66,61 @@ setpostbody('')
   
     setsearchresult(filterList.reverse());
   }, [posts, search]);
+  //axios delete//
+  const handledelete = async(id)=>{
+    await api.delete(`/posts/${id}`)
+   const postlist = posts.filter((post)=> post.id !== id)
   
+   
+    setposts(postlist);
+    navigate('./')
+ 
+  
+  
+  
+}
+
+
+//axios api get//
+useEffect(()=>{
+  const fetchpost = async ()=>{
+    try{
+      const response = await api.get('/posts')
+      setposts(response.data)
+    }
+    catch(err){
+      if(err.response){
+        console.log(err.data)
+        console.log(err.status)
+        console.log(err.headers)
+      }else{
+        console.log(`error: ${err.Messages}`)
+      }
+  
+      
+    }
+  }
+  fetchpost();
+}, []);
+
+//axios put(edit) */
+const handleedit = async(id)=>{
+  const datetime = format(new Date(),'MMMM dd, yyyy PP');
+const updatedata={id,title:edittitle,datetime,body:editbody}
+try{
+  const response = await api.put(`/posts/${id}`,updatedata)
+  setposts(posts.map(post => post.id === id ? {...response.data}: post))
+  setedittitle('')
+  seteditbody('')
+  navigate('/')
+}catch(err){
+console.log(`Error:${err.message}`)
+}
+}
+
+
+
+
   return (
  
   
@@ -82,7 +138,7 @@ setpostbody('')
  <Home 
  posts={searchresult}
  />} />
- <Route path="post" element={
+ <Route path="post" > <Route index element={
  <Newpost
  posttitle={posttitle}
  setposttitle={setposttitle}
@@ -92,16 +148,22 @@ setpostbody('')
  
 
  />} />
+ <Route path=":id" element={<Postpage 
+ posts={posts}
+ handledelete={handledelete}
+ />} />
+ </Route>
   <Route path="*" element={
  <Missing />} />
  <Route path="about" element={
  <About />} />
  </Routes>
 
+ <Footer />
  </div>  
  
 
   )
 }
 
-export default App;
+export default App

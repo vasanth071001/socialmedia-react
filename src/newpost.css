@@ -1,18 +1,42 @@
 form{
     position: relative;
+    height:20px;
+ 
 }
 .newpost1{
     text-align: center;
+    margin-top:20px;
+    font-family:static;
+    font-size:70px;
+    margin-left:13px;
+    color: violet ;
 }
 input{
     height: 30px;
+
  
 }
 button{
     position: absolute;
-    top: 60px;
-    width: 200px;
+    top: 190px;
+    width: 100px;
     height: 40px ;
-}    
+    left:155px;
+}
+.posttitle{
+
+
+    
+    
+}  
+#div2{
+    margin-top:200px;
+    margin-left:-210px;
+    
+}
+textarea{
+    height:120px
+}
+
 
 
