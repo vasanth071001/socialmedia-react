@@ -1,5 +1,5 @@
 import Newpost from "./Newpost";
-import Post from "./Post";
+
 import Header from "./Header";
 import Nav from "./Nav";
 import Home from "./Home";
@@ -7,14 +7,16 @@ import About from "./About";
 import Missing from "./Missing";
 import Footer from "./Footer";
 
+
 import Postpage from "./Postpage"
 
 import { useEffect, useState } from "react";
-import Feed from "./Feed";
+
 import { format } from "date-fns"
 import { Route, Routes } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import api from'./api/post'
+import Edit from "./Edit";
 
 
 function App() {
@@ -105,7 +107,8 @@ useEffect(()=>{
 
 //axios put(edit) */
 const handleedit = async(id)=>{
-  const datetime = format(new Date(),'MMMM dd, yyyy PP');
+  console.log('handle edit its coming')
+  const datetime = format(new Date(),'MMMM dd, yyyy pp');
 const updatedata={id,title:edittitle,datetime,body:editbody}
 try{
   const response = await api.put(`/posts/${id}`,updatedata)
@@ -133,33 +136,18 @@ console.log(`Error:${err.message}`)
  setsearch={setsearch}
  
  />
- <Routes>
-  <Route path="/" element={
- <Home 
- posts={searchresult}
- />} />
- <Route path="post" > <Route index element={
- <Newpost
- posttitle={posttitle}
- setposttitle={setposttitle}
- postbody={postbody}
- setpostbody={setpostbody}
- handlesubmit={handlesubmit}
- 
+<Routes>
+  <Route path="/" element={<Home posts={searchresult} />} />
+  <Route path="/post" element={<Newpost posttitle={posttitle} setposttitle={setposttitle} postbody={postbody} setpostbody={setpostbody} handlesubmit={handlesubmit} />} />
+  <Route path="/post/:id" element={<Postpage posts={posts} handledelete={handledelete} />} />
+  <Route path="/edit/:id" element={<Edit posts={posts} handleedit={handleedit} seteditbody={seteditbody} editbody={editbody} edittitle={edittitle} setedittitle={setedittitle} />} />
+  <Route path="/about" element={<About />} />
+  <Route path="*" element={<Missing />} />
+</Routes>
 
- />} />
- <Route path=":id" element={<Postpage 
- posts={posts}
- handledelete={handledelete}
- />} />
- </Route>
-  <Route path="*" element={
- <Missing />} />
- <Route path="about" element={
- <About />} />
- </Routes>
 
  <Footer />
+
  </div>  
  
 
